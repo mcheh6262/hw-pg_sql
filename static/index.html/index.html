@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>HELLO EXPRESS</title>
+</head>
+
+<body>
+    <h1>GET</h1>
+    <button onclick="run_me()">FIRE AJAX GET ALL</button>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>updatedat</th>
+                <th>name</th>
+                <th>date</th>
+                <th>courseid</th>
+            </tr>
+        </thead>
+        <tbody id="data">
+
+        </tbody>
+    </table>
+    <hr />
+    <h1>INSERT</h1>
+    <p>name : <input type="text" id="txt_name"></p>
+    <p>courseid : <input type="number" id="txt_age"></p>
+<p><button onclick="fire_add()">INSERT</button></p>
+<h1>UPDATE</h1>
+<p>id : <input type="number" id="txt_name"></p>
+<p>name : <input type="number" id="txt_age"></p>
+<p>courseid : <input type="number" id="txt_salary"></p>
+<p><button onclick="fire_update()">UPDATED</button></p>
+<h1>DELETE</h1>
+<p>ID : <input type="number" id="txt_name"></p>
+<p><button onclick="fire_delete()">DELETE</button></p>
+<h1>PATCH</h1>
+<p>id : <input type="number" id="id1"></p>
+<p>name : <input type="text" id="name1"></p>
+<p>courseid : <input type="number" id="courseid1"></p>
+<p><button onclick="fire_delete()">PATCH</button></p>
+<script>
+
+    function run_me() {
+        // localhost:8080/index.html
+        // write: /employee
+        //  --> localhost:8080/employee
+
+        // localhost:5500/index.html
+        // write: /employee
+        //  --> localhost:5500/employee    
+        fetch('/test').then(response => response.json()).
+            then(json => {
+                console.log(json.employees);
+                var tb = ""
+                json.employees.forEach(e => {
+                    tb += `<tr><td>${e.id}</td>
+            <td>${e.updatedat}</td>
+            <td>${e.name}</td>
+            <td>${e.date}</td>
+            <td>${e.courseid}</td></tr>`
+                });
+                document.getElementById('data').innerHTML = tb
+
+                // sqlite
+            })
+    }
+
+    async function fire_add() {
+        // demo code
+        const new_test = {
+            name: document.getElementById('txt_name').value,
+            updatedat: parseFloat(document.getElementById('txt_updatedat').value),
+            name: document.getElementById('txt_name').value,
+            courseid: parseFloat(document.getElementById('txt_courseid').value)
+        }
+        const result = await fetch('/test', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            // take from inputs 
+            body: JSON.stringify(new_test)
+        })
+        run_me()
+
+    }
+    function fire_update() {
+
+    }
+    function fire_delete() {
+        // demo code
+        //const id = from_text_box
+        // fetch(`/employee/${id}`, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-type': 'application/json'
+        //     }}).then()
+    }            
+
+    run_me()
+</script>
+</body>
+
+</html>
